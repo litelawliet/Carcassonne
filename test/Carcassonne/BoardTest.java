@@ -27,7 +27,7 @@ public class BoardTest {
     @Test
     public void testSize() throws Exception{
         Board b = new Board();
-        b.addTile(new Card("whiterun"), 5, 5);
+        b.addTile(new Card("whiterun"), 0, 0);
 
         Assert.assertEquals(1, b.getNumTiles());
     }
@@ -49,12 +49,44 @@ public class BoardTest {
     }
 
     @Test
+    public void testGetTile() throws Exception{
+        Board b = new Board();
+        Card c = new Card("dawnstar");
+        b.addTile(c, 0, 0);
+
+        Assert.assertEquals(c, b.getTileAt(1, 1));
+    }
+
+    @Test
     public void testAjoutAuMemeEndroit() throws Exception{
         Board b = new Board();
+        Card c1 = new Card("solitude");
+        Card c2 = new Card("windhelm");
 
-        b.addTile(new Card("solitude"), 0, 0);
-        b.addTile(new Card("windhelm"), 0, 0);
 
-        System.out.println(b);
+        b.addTile(c1, 0, 0);
+        b.addTile(c2, 0, 0);
+
+        Assert.assertEquals(c1, b.getTileAt(2, 2));
+        Assert.assertEquals(c2, b.getTileAt(1, 1));
+    }
+
+    @Test
+    public void testAjoutSansVoisin() throws Exception{
+        Board b = new Board();
+
+        b.addFirstTile(new Card("solitude"));
+
+        exception.expect(TileHasNoNeighborException.class);
+
+        b.addTile(new Card("morthal"), 3, 5); // cette carte n'a pas de voisines
+    }
+
+    @Test
+    public void testAjoutDouble() throws Exception{
+        Board b = new Board();
+
+        b.addFirstTile(new Card("solitude")); // 1, 1
+        b.addTile(new Card("morthal"), 2, 1);
     }
 }
