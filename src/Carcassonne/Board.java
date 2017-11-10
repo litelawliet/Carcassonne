@@ -1,5 +1,13 @@
 package Carcassonne;
 
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
+
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -12,18 +20,36 @@ public class Board {
       Classe du plateau virtuel
      */
 
+    private Game g;
+
     // "Matrice" contenant les cartes paysage
     private ArrayList<ArrayList<Card>> tiles;
 
     // Carte centrale, celle à partir de laquelle on dessine
     private Card middleCard;
+    private Scene scene;
 
     /**
      * Constructeur.
      */
-    public Board() {
+    public Board(Game g) {
+        this.g = g;
+        initScene();
         this.tiles = new ArrayList<>();
         this.middleCard = null;
+    }
+
+    private void initScene(){
+        Image dos = new Image(getClass().getResourceAsStream("..\\img\\pieces\\dos.png"));
+        Button b = new Button("Pioche ta race");
+        b.setGraphic(new ImageView(dos));
+        b.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+        b.setOnAction(actionEvent ->{
+            g.getCardset().pick();
+        });
+        StackPane p = new StackPane();
+        p.getChildren().add(b);
+        scene = new Scene(p);
     }
 
     public ArrayList<ArrayList<Card>> getTiles() {
@@ -186,6 +212,9 @@ public class Board {
         return false;
     }
 
+    public Scene getScene() {
+        return scene;
+    }
 
 
     // TODO

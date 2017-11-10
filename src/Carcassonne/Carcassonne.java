@@ -19,8 +19,6 @@ public class Carcassonne extends Application{
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Carcassonne");
-        Group root = new Group();
-        Scene scene = new Scene(root);
 
         ArrayList<Player>players = new ArrayList<Player>();
         players.add(new Player(Game.RED_PAWNS));
@@ -30,7 +28,7 @@ public class Carcassonne extends Application{
         Game game = new Game(players, cardset);
 
         primaryStage.setFullScreen(true);
-        primaryStage.setScene(scene);
+        primaryStage.setScene(game.board.getScene());
         primaryStage.show();
     }
 }
