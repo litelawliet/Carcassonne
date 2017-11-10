@@ -22,33 +22,121 @@ public class Point extends Pawn{
         this.points = points;
     }
 
-     public void compteNormal(){
+    public int compteNormal(int nbrCartes){
 
         if (this.getColor() == Color.blue){
+            
             switch (this.getType()){
 
-                case ABBE:
-                    this.points += 1;
-                    //en attente
+                case ABBE: //1pts pour chaque carte autour de l'abbé + 1pts de base
+                    this.points += nbrCartes;
                     break;
 
-                case FARMER:
-                    this.points += 1;
-                    //en attente
+                case FARMER: //1pts pour chaque carte de pré
+                    this.points += nbrCartes;
                     break;
 
-                case KNIGHT:
-                    this.points += 1;
-                    //en attente
+                case KNIGHT: //Une ville de deux cartes = 2pts, une ville normale = 2pts/cartes
+                    if(nbrCartes == 2){
+                        this.points += nbrCartes;
+                    }
+                    else{
+                        this.points += nbrCartes*2;
+                    }
                     break;
 
-                case BRIGAND:
-                    this.points += 1;
-                    //en attente
+                case BRIGAND: //1pts pour chaque carte chemin
+                    this.points += nbrCartes;
                     break;
 
             }
         }
+         
+        else if(this.getColor() == Color.red){
+            
+            switch (this.getType()){
+                    
+                case ABBE: //1pts pour chaque carte autour de l'abbé + 1pts de base
+                    this.points += nbrCartes;
+                    break;
+                    
+                case FARMER: //1pts pour chaque carte de pré
+                    this.points += nbrCartes;
+                    break;
+                    
+                case KNIGHT: //Une ville de deux cartes = 2pts, une ville normale = 2pts/cartes
+                    if(nbrCartes == 2){
+                        this.points += nbrCartes;
+                    }
+                    else{
+                        this.points += nbrCartes*2;
+                    }
+                    break;
+                    
+                case BRIGAND: //1pts pour chaque carte chemin
+                    this.points += nbrCartes;
+                    break;
+                    
+            }
+        }
+         
+        else if(this.getColor() == Color.yellow){
+            
+            switch (this.getType()){
+                    
+                case ABBE: //1pts pour chaque carte autour de l'abbé + 1pts de base
+                    this.points += nbrCartes;
+                    break;
+                    
+                case FARMER: //1pts pour chaque carte de pré
+                    this.points += nbrCartes;
+                    break;
+                    
+                case KNIGHT: //Une ville de deux cartes = 2pts, une ville normale = 2pts/cartes
+                    if(nbrCartes == 2){
+                        this.points += nbrCartes;
+                    }
+                    else{
+                        this.points += nbrCartes*2;
+                    }
+                    break;
+                    
+                case BRIGAND: //1pts pour chaque carte chemin
+                    this.points += nbrCartes;
+                    break;
+                    
+            }
+        }
+         
+        else if(this.getColor() == Color.green){
+            
+            switch (this.getType()){
+                    
+                case ABBE: //1pts pour chaque carte autour de l'abbé + 1pts de base
+                    this.points += nbrCartes;
+                    break;
+                    
+                case FARMER: //1pts pour chaque carte de pré
+                    this.points += nbrCartes;
+                    break;
+                    
+                case KNIGHT: //Une ville de deux cartes = 2pts, une ville normale = 2pts/cartes
+                    if(nbrCartes == 2){
+                        this.points += nbrCartes;
+                    }
+                    else{
+                        this.points += nbrCartes*2;
+                    }
+                    break;
+                    
+                case BRIGAND: //1pts pour chaque carte chemin
+                    this.points += nbrCartes;
+                    break;
+                    
+            }
+        }
+         
+        return this.points;
 
      }
 
