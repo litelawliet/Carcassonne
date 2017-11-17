@@ -247,6 +247,10 @@ public class Board {
     }
 
     public Scene getScene() {
+        /*Group g = new Group();
+        Scene scene = new Scene(g);
+        g.getChildren().add(paysage);*/
+
         return scene;
     }
 
