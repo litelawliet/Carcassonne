@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 
 import java.awt.*;
@@ -29,6 +30,11 @@ public class Board {
     private Card middleCard;
     private Scene scene;
 
+    // Arrière plan (les cartes paysages) != pane global (qui contient plus de choses)
+    private GridPane paysage;
+
+    private final String IMG_PATH = ".\\img\\";
+
     /**
      * Constructeur.
      */
@@ -37,6 +43,17 @@ public class Board {
         initScene();
         this.tiles = new ArrayList<>();
         this.middleCard = null;
+        paysage = new GridPane();
+
+    }
+
+    public Board() {
+        g = null;
+        initScene();
+        this.tiles = new ArrayList<>();
+        this.middleCard = null;
+        paysage = new GridPane();
+
     }
 
     private void initScene(){
@@ -46,6 +63,7 @@ public class Board {
         b.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
         b.setOnAction(actionEvent ->{
             g.getCardset().pick();
+            System.out.println("piocher");
         });
         StackPane p = new StackPane();
         p.getChildren().add(b);
@@ -92,6 +110,8 @@ public class Board {
         }
 
         tiles.get(row).set(col, c);
+        addGraphicTile(c.getPath(), row, col);
+
 
         // Il faut toujours qu'il y ait des tiles vides à "gauche" et en "haut" pour pouvoir ajouter d'autres tiles
         //à gauche
@@ -113,8 +133,22 @@ public class Board {
      * @param c la carte en question
      */
     public void addFirstTile(Card c) throws TileOutOfRangeException, TileHasNoNeighborException {
+        // On remplit comme un bourrin pour avoir un peu le choix au début lol
+        final int LARGEUR = 3; // impair c'est plus joli
+        final int LONGUEUR = 3; // idem
+
+        for(int i=0; i < LONGUEUR; i++){
+            for(int j=0; j < LARGEUR; j++){
+                addGraphicTile("white.jpg", i, j);
+            }
+        }
+
         this.addTile(c, 0, 0);
         this.middleCard = c;
+    }
+
+    private void addGraphicTile(String path, int row, int col){
+        paysage.add(new ImageView(IMG_PATH + path), col, row);
     }
 
     /**
