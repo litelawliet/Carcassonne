@@ -44,7 +44,6 @@ public class Board {
         this.tiles = new ArrayList<>();
         this.middleCard = null;
         paysage = new GridPane();
-
     }
 
     public Board() {
@@ -134,7 +133,7 @@ public class Board {
 
         for(int i=0; i < LONGUEUR; i++){
             for(int j=0; j < LARGEUR; j++){
-                addGraphicTile("white.jpg", i, j);
+                addGraphicTile("white.png", i, j);
             }
         }
 
