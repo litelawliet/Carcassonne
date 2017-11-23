@@ -93,7 +93,7 @@ public class Board {
         }
 
         if(!this.hasNeighbors(row, col)) throw new TileHasNoNeighborException(); // la carte doit avoir une voisine
-
+        // TODO mettre des addBlankTile partout
         // Row = numéro liste dans la grosse liste
         // Col = numéro carte dans la liste row
 
@@ -160,8 +160,23 @@ public class Board {
         this.middleCard = c;
     }
 
+    /**
+     * Permet de rajouter l'élément graphique de la Scene
+     * @param path nom du fichier image
+     * @param row ligne
+     * @param col colonne
+     */
     private void addGraphicTile(String path, int row, int col){
         paysage.add(new ImageView(IMG_PATH + path), col, row);
+    }
+
+    /**
+     * Permet de rajouter une tile blanche graphiquement
+     * @param row la ligne
+     * @param col la colonne
+     */
+    private void addBlankTile(int row, int col){
+        addGraphicTile("white.png", row, col);
     }
 
     /**
