@@ -48,12 +48,7 @@ public class Board {
     }
 
     public Board() {
-        g = null;
-        initScene();
-        this.tiles = new ArrayList<>();
-        this.middleCard = null;
-        paysage = new GridPane();
-
+        this(null);
     }
 
     private void initScene(){
