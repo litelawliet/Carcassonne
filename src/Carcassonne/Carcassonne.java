@@ -29,6 +29,7 @@ public class Carcassonne extends Application{
 
         primaryStage.setFullScreen(true);
         primaryStage.setScene(game.board.getScene());
+        primaryStage.setFullScreenExitHint("");
         primaryStage.show();
     }
 }
