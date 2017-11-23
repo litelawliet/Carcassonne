@@ -1,15 +1,12 @@
 package Carcassonne;
 
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
-
-import java.awt.*;
+import javafx.scene.layout.StackPane
 import java.util.ArrayList;
 
 /**
@@ -83,10 +80,17 @@ public class Board {
      * Ajoute une carte paysage au jeu.
      * @param c la carte à ajouter
      */
-    public void addTile(Card c, int row, int col) throws TileOutOfRangeException, TileHasNoNeighborException {
+    public void addTile(Card c, int row, int col) throws TileOutOfRangeException, TileHasNoNeighborException, CardAlreadyThereException {
         if(c == null) return;
 
         if(row < 0 || col < 0) throw new TileOutOfRangeException(); // valeurs négatives
+
+        // on vérifie qu'il n'y a pas déjà une carte sur place TODO test
+        try {
+            throw new CardAlreadyThereException();
+        } catch(NullPointerException npe){
+            /* nothing, execution continues */
+        }
 
         if(!this.hasNeighbors(row, col)) throw new TileHasNoNeighborException(); // la carte doit avoir une voisine
 
@@ -107,8 +111,8 @@ public class Board {
         addGraphicTile(c.getPath(), row, col);
 
 
-        // Il faut toujours qu'il y ait des tiles vides à "gauche" et en "haut" pour pouvoir ajouter d'autres tiles
-        //à gauche
+        // Il faut toujours qu'il y ait des tiles vides aux bords pour pouvoir ajouter d'autres tiles
+        // à gauche
         if(tiles.get(row).get(0) != null){
             for (ArrayList<Card> line:tiles
                  ) {
@@ -120,23 +124,38 @@ public class Board {
         if(!tiles.get(0).isEmpty()){
             tiles.add(0, new ArrayList<>());
         }
+
+        // à droite
+        if(tiles.get(row).get(tiles.get(row).size()-1) != null){
+            for (ArrayList<Card> line:tiles
+                 ) {
+                line.add(null);
+                if(line != tiles.get(row)){
+                    while(line.size() < tiles.get(row).size()){ // pour rééquilibrer la taille des lignes
+                        line.add(null);
+                    }
+                }
+            }
+        }
+
+        // en bas
+        if(tiles.get(tiles.size()-1).get(col) != null){
+            tiles.add(new ArrayList<>());
+        }
+
+        // remplissage dernière ligne si une nouvelle a été créée
+        if(tiles.get(tiles.size()-1).isEmpty()){
+            for(int i=0; i < tiles.get(row).size(); i++){
+                tiles.get(tiles.size()-1).add(null);
+            }
+        }
     }
 
     /**
      * Pour ajouter la première carte paysage rapidement
      * @param c la carte en question
      */
-    public void addFirstTile(Card c) throws TileOutOfRangeException, TileHasNoNeighborException {
-        // On remplit comme un bourrin pour avoir un peu le choix au début lol
-        final int LARGEUR = 3; // impair c'est plus joli
-        final int LONGUEUR = 3; // idem
-
-        for(int i=0; i < LONGUEUR; i++){
-            for(int j=0; j < LARGEUR; j++){
-                addGraphicTile("white.png", i, j);
-            }
-        }
-
+    public void addFirstTile(Card c) throws TileOutOfRangeException, TileHasNoNeighborException, CardAlreadyThereException {
         this.addTile(c, 0, 0);
         this.middleCard = c;
     }
