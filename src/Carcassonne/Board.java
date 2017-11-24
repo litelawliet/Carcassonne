@@ -1,5 +1,6 @@
 package Carcassonne;
 
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
@@ -41,6 +42,7 @@ public class Board {
         this.g = g;
         paysage = new GridPane();
         paysage.setStyle("-fx-background-color: transparent;");
+        paysage.setAlignment(Pos.CENTER);
         this.tiles = new ArrayList<>();
         this.middleCard = null;
 
