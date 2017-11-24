@@ -108,8 +108,6 @@ public class Board {
         }
 
         tiles.get(row).set(col, c);
-        addGraphicTile(c.getPath(), row, col);
-
 
         // Il faut toujours qu'il y ait des tiles vides aux bords pour pouvoir ajouter d'autres tiles
         // à gauche
