@@ -179,6 +179,24 @@ public class Board {
         addGraphicTile("white.png", row, col);
     }
 
+
+    /**
+     * Crée un objet GridPane représentant les tiles
+     * @return le gridpane en question
+     */
+    public GridPane getPaysage(){
+        paysage.getChildren().removeAll();
+
+        for(int i=0; i < tiles.size(); i++){
+            for(int j=0; j < tiles.get(i).size(); j++){
+                if(tiles.get(i).get(j) == null) addBlankTile(i, j);
+                else addGraphicTile(tiles.get(i).get(j).getPath(), i, j);
+            }
+        }
+
+        return paysage;
+    }
+
     /**
      * Vérifie si le plateau contient telle carte
      * @param c la carte à vérifier
