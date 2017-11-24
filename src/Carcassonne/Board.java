@@ -7,6 +7,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+
 import java.util.ArrayList;
 
 /**
@@ -37,10 +39,12 @@ public class Board {
      */
     public Board(Game g) {
         this.g = g;
-        initScene();
+        paysage = new GridPane();
+        paysage.setStyle("-fx-background-color: transparent;");
         this.tiles = new ArrayList<>();
         this.middleCard = null;
-        paysage = new GridPane();
+
+        initScene();
     }
 
     public Board() {
@@ -58,7 +62,7 @@ public class Board {
         });
         StackPane p = new StackPane();
         p.getChildren().add(b);
-        scene = new Scene(p);
+        scene = new Scene(getPaysage(), Color.WHITE);
     }
 
     public ArrayList<ArrayList<Card>> getTiles() {
@@ -86,14 +90,8 @@ public class Board {
         if(row < 0 || col < 0) throw new TileOutOfRangeException(); // valeurs négatives
 
         // on vérifie qu'il n'y a pas déjà une carte sur place TODO test
-        try {
-            throw new CardAlreadyThereException();
-        } catch(NullPointerException npe){
-            /* nothing, execution continues */
-        }
 
         if(!this.hasNeighbors(row, col)) throw new TileHasNoNeighborException(); // la carte doit avoir une voisine
-        // TODO mettre des addBlankTile partout
         // Row = numéro liste dans la grosse liste
         // Col = numéro carte dans la liste row
 
@@ -116,11 +114,13 @@ public class Board {
                  ) {
                 line.add(0, null);
             }
+            col++;
         }
 
         // en haut
-        if(!tiles.get(0).isEmpty()){
+        if(tiles.get(0).contains(c)){
             tiles.add(0, new ArrayList<>());
+            row++;
         }
 
         // à droite
@@ -145,6 +145,13 @@ public class Board {
         if(tiles.get(tiles.size()-1).isEmpty()){
             for(int i=0; i < tiles.get(row).size(); i++){
                 tiles.get(tiles.size()-1).add(null);
+            }
+        }
+
+        // idem en haut
+        if(tiles.get(0).isEmpty() || tiles.get(1).contains(c)){ // cette condition est sujette à caution
+            while(tiles.get(0).size() < tiles.get(row).size()){
+                tiles.get(0).add(null);
             }
         }
     }
@@ -187,8 +194,12 @@ public class Board {
 
         for(int i=0; i < tiles.size(); i++){
             for(int j=0; j < tiles.get(i).size(); j++){
-                if(tiles.get(i).get(j) == null) addBlankTile(i, j);
-                else addGraphicTile(tiles.get(i).get(j).getPath(), i, j);
+                if(tiles.get(i).get(j) == null){
+                    addBlankTile(i, j);
+                }
+                else{
+                    addGraphicTile(tiles.get(i).get(j).getPath(), i, j);
+                }
             }
         }
 
