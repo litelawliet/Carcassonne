@@ -89,4 +89,14 @@ public class BoardTest {
         b.addFirstTile(new Card("solitude")); // 1, 1
         b.addTile(new Card("morthal"), 2, 1);
     }
+
+    @Test
+    public void testPose2CartesMemeEmplacement() throws Exception{
+        Board b = new Board();
+
+        b.addFirstTile(new Card("yolo"));
+
+        exception.expect(CardAlreadyThereException.class);
+        b.addTile(new Card("swag"),1 ,1);
+    }
 }

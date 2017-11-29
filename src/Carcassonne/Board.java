@@ -27,6 +27,10 @@ public class Board {
 
     // Carte centrale, celle à partir de laquelle on dessine
     private Card middleCard;
+
+    // Carte actuellement sélectionnée (celle qui va être posée)
+    Card currentCard;
+
     private Scene scene;
 
     // Arrière plan (les cartes paysages) != pane global (qui contient plus de choses)
@@ -45,11 +49,16 @@ public class Board {
         paysage.setAlignment(Pos.CENTER);
         tiles = new ArrayList<>();
         middleCard = null;
+        currentCard = null;
 
+        // TODO cette partie doit être retirée
         try {
-            addFirstTile(new Card("pieces\\5x1.jpg"));
-            addTile(new Card("pieces\\5x1.jpg"), 0, 1);
-        } catch (Exception e){}
+            addFirstTile(new Card("pieces\\5x1.jpg")); // voir isFirstMove() pour l'usage de cette méthode
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        currentCard = new Card("pieces\\14x2.jpg"); // TODO gérer ce truc et virer cette ligne
+
 
         initScene();
     }
@@ -94,13 +103,16 @@ public class Board {
     public void addTile(Card c, int row, int col) throws TileOutOfRangeException, TileHasNoNeighborException, CardAlreadyThereException {
         if(c == null) return;
 
-        if(row < 0 || col < 0) throw new TileOutOfRangeException(); // valeurs négatives
+        if(c != middleCard){ // on ne fait pas de tests pour la première carte dont la pose est pré-établie
+            if(row < 0 || col < 0 || row >= tiles.size() || col >= tiles.get(row).size()) throw new TileOutOfRangeException();
 
-        // on vérifie qu'il n'y a pas déjà une carte sur place TODO test
+            // on vérifie qu'il n'y a pas déjà une carte sur place
+            if(tiles.get(row).get(col) != null) throw new CardAlreadyThereException();
 
-        if(!this.hasNeighbors(row, col)) throw new TileHasNoNeighborException(); // la carte doit avoir une voisine
-        // Row = numéro liste dans la grosse liste
-        // Col = numéro carte dans la liste row
+                if(!this.hasNeighbors(row, col)) throw new TileHasNoNeighborException(); // la carte doit avoir une voisine
+            // Row = numéro liste dans la grosse liste
+            // Col = numéro carte dans la liste row
+        }
 
         // si row n'existe pas on la crée
         while(tiles.size()-1 < row){
@@ -168,8 +180,8 @@ public class Board {
      * @param c la carte en question
      */
     public void addFirstTile(Card c) throws TileOutOfRangeException, TileHasNoNeighborException, CardAlreadyThereException {
-        this.addTile(c, 0, 0);
         this.middleCard = c;
+        this.addTile(c, 0, 0);
     }
 
     /**
@@ -180,12 +192,40 @@ public class Board {
      */
     private void addGraphicTile(String path, int row, int col){
         //paysage.add(new ImageView(IMG_PATH + path), col, row);
-        Button b = new Button();
+        Tile t = new Tile(row, col);
 
-        b.setMinSize(TILE_SIZE, TILE_SIZE); // 70 = taille en pixels
-        b.setBackground(new Background(new BackgroundImage(new Image(getClass().getResourceAsStream("..\\img\\" + path)) , BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
+        t.setMinSize(TILE_SIZE, TILE_SIZE); // 70 = taille en pixels
+        t.setBackground(new Background(new BackgroundImage(new Image(getClass().getResourceAsStream("..\\img\\" + path)) , BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
 
-        paysage.add(b, col, row);
+        t.setOnAction( event -> {
+            try {
+                setGraphicTile(currentCard.getPath(), t);
+            } catch (TileHasNoNeighborException thnne) {
+                System.out.println("cet emplacement n'a pas de cartes voisines");
+            } catch (CardAlreadyThereException cate){
+                System.out.println("il y a déjà une carte là");
+            } catch (TileOutOfRangeException toore){
+                System.out.println("je ne peux pas poser la carte là");
+            }
+
+
+        });
+
+        paysage.add(t, col, row);
+    }
+
+    /**
+     * Équivalent à addGraphicTile, mais un bouton déjà existant. Change son background, en fait.
+     * @param path nom du fichier image
+     * @param t la tile à bidouiller
+     */
+    private void setGraphicTile(String path, Tile t) throws TileOutOfRangeException, CardAlreadyThereException, TileHasNoNeighborException {
+
+        // ajout effectif
+        addTile(new Card(path), t.getRow(), t.getCol());
+
+        // refresh paysage
+        paysage = getPaysage();
     }
 
     /**
@@ -234,7 +274,7 @@ public class Board {
 
     /**
      * Retourne le nombre de cartes paysage en jeu
-     * @return le nombre de cartes paysages en jeu
+     * @return le nombre de cartes paysage en jeu
      */
     public int getNumTiles() {
         int res = 0;
@@ -250,12 +290,21 @@ public class Board {
         return res;
     }
 
+
     /**
      * Teste si le plateau est vide, càd aucune carte paysage
      * @return true si vide
      */
     public boolean isEmpty(){
         return getNumTiles() == 0;
+    }
+
+    /**
+     * Afin de savoir si on doit utiliser addFirstTile ou addTile
+     * @return true s'il faut utiliser addFirstTile
+     */
+    public boolean isFirstMove(){
+        return middleCard == null;
     }
 
     /**
@@ -315,14 +364,10 @@ public class Board {
     }
 
     public Scene getScene() {
-        /*Group g = new Group();
-        Scene scene = new Scene(g);
-        g.getChildren().add(paysage);*/
-
         return scene;
     }
 
-
-    // TODO
-    // diverses précisions : pour récupérer la position de la carte (afin d'ajouter des cartes) : indexOf
+    public void setCurrentCard(Card currentCard) {
+        this.currentCard = currentCard;
+    }
 }
