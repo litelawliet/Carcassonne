@@ -6,8 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
@@ -34,6 +33,7 @@ public class Board {
     private GridPane paysage;
 
     private final String IMG_PATH = ".\\img\\";
+    private final int TILE_SIZE = 70; // en pixels
 
     /**
      * Constructeur.
@@ -43,8 +43,13 @@ public class Board {
         paysage = new GridPane();
         paysage.setStyle("-fx-background-color: transparent;");
         paysage.setAlignment(Pos.CENTER);
-        this.tiles = new ArrayList<>();
-        this.middleCard = null;
+        tiles = new ArrayList<>();
+        middleCard = null;
+
+        try {
+            addFirstTile(new Card("pieces\\5x1.jpg"));
+            addTile(new Card("pieces\\5x1.jpg"), 0, 1);
+        } catch (Exception e){}
 
         initScene();
     }
@@ -174,7 +179,13 @@ public class Board {
      * @param col colonne
      */
     private void addGraphicTile(String path, int row, int col){
-        paysage.add(new ImageView(IMG_PATH + path), col, row);
+        //paysage.add(new ImageView(IMG_PATH + path), col, row);
+        Button b = new Button();
+
+        b.setMinSize(TILE_SIZE, TILE_SIZE); // 70 = taille en pixels
+        b.setBackground(new Background(new BackgroundImage(new Image(getClass().getResourceAsStream("..\\img\\" + path)) , BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
+
+        paysage.add(b, col, row);
     }
 
     /**
