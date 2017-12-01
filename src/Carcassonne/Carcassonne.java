@@ -23,9 +23,10 @@ public class Carcassonne extends Application{
         ArrayList<Player>players = new ArrayList<Player>();
         players.add(new Player(Game.RED_PAWNS));
 
-        Cardset cardset = new Cardset();
+        Board board = new Board();
+        Cardset cardset = new Cardset(board);
 
-        Game game = new Game(players, cardset);
+        Game game = new Game(players, cardset, board);
 
         primaryStage.setFullScreen(true);
         primaryStage.setScene(game.board.getScene());

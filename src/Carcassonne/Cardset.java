@@ -35,10 +35,14 @@ public class Cardset {
             IMG_PATH+"20.txt",IMG_PATH+"20.txt",IMG_PATH+"21.txt"
     };
 
-    public Cardset(){
+    public Cardset(Board b) {
         cards = new ArrayList<>();
         for(int i = 0; i < paths.length; i++){
-            cards.add(new Card(paths[i]));
+            try {
+                cards.add(new Card(paths[i],b));
+            } catch (CloneNotSupportedException e) {
+                e.printStackTrace();
+            }
         }
     }
 

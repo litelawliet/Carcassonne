@@ -9,27 +9,28 @@ import java.util.ArrayList;
  */
 public class Game {
 
+    public static Pawn[] RED_PAWNS =
+            {new Pawn(Color.RED), new Pawn(Color.RED), new Pawn(Color.RED), new Pawn(Color.RED), new Pawn(Color.RED), new Pawn(Color.RED), new Pawn(Color.RED), new Pawn(Color.RED)};
+    public static Pawn[] GREEN_PAWNS =
+            {new Pawn(Color.GREEN), new Pawn(Color.GREEN), new Pawn(Color.GREEN), new Pawn(Color.GREEN), new Pawn(Color.GREEN), new Pawn(Color.GREEN), new Pawn(Color.GREEN), new Pawn(Color.GREEN)};
+    public static Pawn[] YELLOW_PAWNS =
+            {new Pawn(Color.YELLOW), new Pawn(Color.YELLOW), new Pawn(Color.YELLOW), new Pawn(Color.YELLOW), new Pawn(Color.YELLOW), new Pawn(Color.YELLOW), new Pawn(Color.YELLOW), new Pawn(Color.YELLOW)};
+    public static Pawn[] BLUE_PAWNS =
+            {new Pawn(Color.BLUE), new Pawn(Color.BLUE), new Pawn(Color.BLUE), new Pawn(Color.BLUE), new Pawn(Color.BLUE), new Pawn(Color.BLUE), new Pawn(Color.BLUE), new Pawn(Color.BLUE)};
     public Board board;
     private Cardset cardset;
     private ArrayList<Player> players;
     private int[][] scoreboard;
-    public static Pawn[] RED_PAWNS =
-            {new Pawn(Color.RED),new Pawn(Color.RED),new Pawn(Color.RED),new Pawn(Color.RED),new Pawn(Color.RED),new Pawn(Color.RED),new Pawn(Color.RED),new Pawn(Color.RED)};
-    public static Pawn[] GREEN_PAWNS =
-            {new Pawn(Color.GREEN),new Pawn(Color.GREEN),new Pawn(Color.GREEN),new Pawn(Color.GREEN),new Pawn(Color.GREEN),new Pawn(Color.GREEN),new Pawn(Color.GREEN),new Pawn(Color.GREEN)};
-    public static Pawn[] YELLOW_PAWNS =
-            {new Pawn(Color.YELLOW),new Pawn(Color.YELLOW),new Pawn(Color.YELLOW),new Pawn(Color.YELLOW),new Pawn(Color.YELLOW),new Pawn(Color.YELLOW),new Pawn(Color.YELLOW),new Pawn(Color.YELLOW)};
-    public static Pawn[] BLUE_PAWNS =
-            {new Pawn(Color.BLUE),new Pawn(Color.BLUE),new Pawn(Color.BLUE),new Pawn(Color.BLUE),new Pawn(Color.BLUE),new Pawn(Color.BLUE),new Pawn(Color.BLUE),new Pawn(Color.BLUE)};
+    private Player actualPlayer;
 
-    public Game(ArrayList<Player> players, Cardset cardset){
+    public Game(ArrayList<Player> players, Cardset cardset, Board board) {
         this.cardset = cardset;
-        board = new Board(this);
+        this.board = board;
         this.players = new ArrayList<>();
         this.players.addAll(players);
         scoreboard = new int[50][4];
-        for(int i = 0; i < 4; i++){
-            scoreboard[0][i] = i+1;
+        for (int i = 0; i < 4; i++) {
+            scoreboard[0][i] = i + 1;
         }
     }
 
@@ -47,5 +48,9 @@ public class Game {
 
     public void setPlayers(ArrayList<Player> players) {
         this.players = players;
+    }
+
+    public Player getActualPlayer() {
+        return actualPlayer;
     }
 }

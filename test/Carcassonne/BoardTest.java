@@ -17,7 +17,7 @@ public class BoardTest {
     @Test
     public void testAddTile() throws Exception{
         Board b = new Board();
-        Card c = new Card("markarth");
+        Card c = new Card("markarth",b);
 
         b.addTile(c, 0, 0);
 
@@ -27,7 +27,7 @@ public class BoardTest {
     @Test
     public void testSize() throws Exception{
         Board b = new Board();
-        b.addTile(new Card("whiterun"), 0, 0);
+        b.addTile(new Card("whiterun",b), 0, 0);
 
         Assert.assertEquals(1, b.getNumTiles());
     }
@@ -45,13 +45,13 @@ public class BoardTest {
 
         exception.expect(TileOutOfRangeException.class);
 
-        b.addTile(new Card(""), -8, 10);
+        b.addTile(new Card("",b), -8, 10);
     }
 
     @Test
     public void testGetTile() throws Exception{
         Board b = new Board();
-        Card c = new Card("dawnstar");
+        Card c = new Card("dawnstar",b);
         b.addTile(c, 0, 0);
 
         Assert.assertEquals(c, b.getTileAt(1, 1));
@@ -60,8 +60,8 @@ public class BoardTest {
     @Test
     public void testAjoutAuMemeEndroit() throws Exception{
         Board b = new Board();
-        Card c1 = new Card("solitude");
-        Card c2 = new Card("windhelm");
+        Card c1 = new Card("solitude",b);
+        Card c2 = new Card("windhelm",b);
 
 
         b.addTile(c1, 0, 0);
@@ -75,28 +75,28 @@ public class BoardTest {
     public void testAjoutSansVoisin() throws Exception{
         Board b = new Board();
 
-        b.addFirstTile(new Card("solitude"));
+        b.addFirstTile(new Card("solitude",b));
 
         exception.expect(TileHasNoNeighborException.class);
 
-        b.addTile(new Card("morthal"), 3, 5); // cette carte n'a pas de voisines
+        b.addTile(new Card("morthal",b), 3, 5); // cette carte n'a pas de voisines
     }
 
     @Test
     public void testAjoutDouble() throws Exception{
         Board b = new Board();
 
-        b.addFirstTile(new Card("solitude")); // 1, 1
-        b.addTile(new Card("morthal"), 2, 1);
+        b.addFirstTile(new Card("solitude",b)); // 1, 1
+        b.addTile(new Card("morthal",b), 2, 1);
     }
 
     @Test
     public void testPose2CartesMemeEmplacement() throws Exception{
         Board b = new Board();
 
-        b.addFirstTile(new Card("yolo"));
+        b.addFirstTile(new Card("yolo",b));
 
         exception.expect(CardAlreadyThereException.class);
-        b.addTile(new Card("swag"),1 ,1);
+        b.addTile(new Card("swag",b),1 ,1);
     }
 }

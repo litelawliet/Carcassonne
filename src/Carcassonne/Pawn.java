@@ -8,18 +8,10 @@ import java.awt.*;
  */
 public class Pawn {
     public static String RED_PAWN = "";
-    public enum Type{
-        NONE,
-        KNIGHT,
-        FARMER,
-        ABBE,
-        BRIGAND,
-    }
     private Color color;
     private Player owner;
     private Type type;
-
-    public Pawn(Color color){
+    public Pawn(Color color) {
         this.color = color;
         this.owner = owner;
     }
@@ -46,5 +38,13 @@ public class Pawn {
 
     public void setType(Type type) {
         this.type = type;
+    }
+
+    public enum Type {
+        NONE,
+        KNIGHT,
+        FARMER,
+        ABBE,
+        BRIGAND,
     }
 }
