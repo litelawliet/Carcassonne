@@ -26,6 +26,7 @@ public class Game {
     public Game(ArrayList<Player> players, Cardset cardset, Board board) {
         this.cardset = cardset;
         this.board = board;
+        this.board.setGame(this);
         this.players = new ArrayList<>();
         this.players.addAll(players);
         scoreboard = new int[50][4];

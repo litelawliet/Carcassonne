@@ -45,19 +45,6 @@ public class Board {
         middleCard = null;
         currentCard = null;
 
-        // TODO cette partie doit être retirée
-        try {
-            addFirstTile(g.getCardset().pick()); // voir isFirstMove() pour l'usage de cette méthode
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        try {
-            currentCard = new Card("pieces\\14x2.jpg", this); // TODO gérer ce truc et virer cette ligne
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
-
-
         initScene();
     }
 
@@ -383,5 +370,9 @@ public class Board {
 
     public void setCurrentCard(Card currentCard) {
         this.currentCard = currentCard;
+    }
+
+    public void setGame(Game game) {
+        g = game;
     }
 }

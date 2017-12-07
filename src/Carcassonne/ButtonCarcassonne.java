@@ -47,8 +47,8 @@ public class ButtonCarcassonne extends Button implements EventHandler {
         return type;
     }
 
-    public ButtonCarcassonne clone() throws CloneNotSupportedException {
-        super.clone();
+
+    public ButtonCarcassonne clone(){
         ButtonCarcassonne copy = new ButtonCarcassonne(color, type);
         copy.isMarked = this.isMarked;
         return copy;
