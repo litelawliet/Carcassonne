@@ -10,6 +10,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Project Carcassonne-master
@@ -33,17 +34,31 @@ public class Board {
     // Arrière plan (les cartes paysages) != pane global (qui contient plus de choses)
     private GridPane paysage;
 
+    // global pane
+    private BorderPane globalPane;
+
+    // contient la main du joueur actuel
+    private GridPane handPane;
+
     /**
      * Constructeur.
      */
     public Board(Game g) {
         this.g = g;
-        paysage = new GridPane();
-        paysage.setStyle("-fx-background-color: transparent;");
-        paysage.setAlignment(Pos.CENTER);
         tiles = new ArrayList<>();
         middleCard = null;
         currentCard = null;
+
+        paysage = new GridPane();
+        paysage.setStyle("-fx-background-color: transparent;");
+        paysage.setAlignment(Pos.CENTER);
+
+        handPane = new GridPane();
+        handPane.setAlignment(Pos.CENTER);
+        handPane.setStyle("-fx-background-color: transparent;");
+
+        globalPane = new BorderPane(paysage, null, null, handPane, null);
+        globalPane.setStyle("-fx-background-color: transparent;");
 
         initScene();
     }
@@ -63,7 +78,7 @@ public class Board {
         });
         StackPane p = new StackPane();
         p.getChildren().add(b);
-        scene = new Scene(getPaysage(), Color.WHITE);
+        scene = new Scene(globalPane, Color.WHITE);
     }
 
     public ArrayList<ArrayList<Card>> getTiles() {
@@ -248,6 +263,30 @@ public class Board {
         }
 
         return paysage;
+    }
+
+    /**
+     * Régénère le contenu de handPane en fonction de la main du joueur actuel
+     */
+    private void reloadPlayerHand(){
+        handPane.getChildren().removeAll();
+
+        List<Card> hand = g.getActualPlayer().getHand();
+
+        for(int i=0; i < hand.size(); i++){
+
+            Card c = hand.get(i);
+
+            Button b = new Button();
+            b.setMinSize(TILE_SIZE, TILE_SIZE); // 70 = taille en pixels
+            b.setBackground(new Background(new BackgroundImage(new Image(getClass().getResourceAsStream(c.getPath())), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
+
+            b.setOnAction(event -> {
+                currentCard = c;
+            });
+
+            handPane.add(b, i, 0);
+        }
     }
 
     /**
